@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿///////////////////////////////////////////////////////////////////////////////
+// VisionRectangle.cs
+// 
+// Author: Adam Hegedus
+// Contact: adam.hegedus@possible.com
+// Copyright © 2018 POSSIBLE CEE. Released under the MIT license.
+///////////////////////////////////////////////////////////////////////////////
+
+using UnityEngine;
 
 namespace Possible.Vision
 {
@@ -7,10 +15,10 @@ namespace Possible.Vision
     /// </summary>
     public struct VisionRectangle
     {
-        public Vector2 topLeft;
-        public Vector2 topRight;
-        public Vector2 bottomRight;
-        public Vector2 bottomLeft;
+        public readonly Vector2 topLeft;
+        public readonly Vector2 topRight;
+        public readonly Vector2 bottomRight;
+        public readonly Vector2 bottomLeft;
 
         public VisionRectangle(Vector2 topLeft, Vector2 topRight, Vector2 bottomRight, Vector2 bottomLeft)
         {

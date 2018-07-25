@@ -1,4 +1,12 @@
-﻿using System;
+﻿///////////////////////////////////////////////////////////////////////////////
+// EventArguments.cs
+// 
+// Author: Adam Hegedus
+// Contact: adam.hegedus@possible.com
+// Copyright © 2018 POSSIBLE CEE. Released under the MIT license.
+///////////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 

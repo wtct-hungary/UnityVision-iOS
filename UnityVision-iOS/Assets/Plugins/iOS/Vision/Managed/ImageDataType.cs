@@ -1,4 +1,12 @@
-﻿namespace Possible.Vision
+﻿///////////////////////////////////////////////////////////////////////////////
+// ImageDataType.cs
+// 
+// Author: Adam Hegedus
+// Contact: adam.hegedus@possible.com
+// Copyright © 2018 POSSIBLE CEE. Released under the MIT license.
+///////////////////////////////////////////////////////////////////////////////
+
+namespace Possible.Vision
 {
 	public enum ImageDataType 
 	{

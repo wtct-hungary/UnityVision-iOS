@@ -1,4 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿///////////////////////////////////////////////////////////////////////////////
+// CGPoint.cs
+// 
+// Author: Adam Hegedus
+// Contact: adam.hegedus@possible.com
+// Copyright © 2018 POSSIBLE CEE. Released under the MIT license.
+///////////////////////////////////////////////////////////////////////////////
+
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace Possible.Vision

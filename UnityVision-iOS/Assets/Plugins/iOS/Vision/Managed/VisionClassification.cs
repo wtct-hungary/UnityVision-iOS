@@ -1,4 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿///////////////////////////////////////////////////////////////////////////////
+// VisionClassification.cs
+// 
+// Author: Adam Hegedus
+// Contact: adam.hegedus@possible.com
+// Copyright © 2018 POSSIBLE CEE. Released under the MIT license.
+///////////////////////////////////////////////////////////////////////////////
+
+using System.Runtime.InteropServices;
 
 namespace Possible.Vision
 {

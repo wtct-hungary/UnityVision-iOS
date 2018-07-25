@@ -1,4 +1,12 @@
-﻿using System.Linq;
+﻿///////////////////////////////////////////////////////////////////////////////
+// WebCamExample.cs
+// 
+// Author: Adam Hegedus
+// Contact: adam.hegedus@possible.com
+// Copyright © 2018 POSSIBLE CEE. Released under the MIT license.
+///////////////////////////////////////////////////////////////////////////////
+
+using System.Linq;
 using Possible.Vision;
 using UnityEngine;
 using UnityEngine.UI;

@@ -3,7 +3,6 @@
 //  Vision
 //
 //  Created by Adam Hegedus on 2018. 05. 23..
-//  Copyright © 2018. Possible Zrt. All rights reserved.
 //
 
 #include "Vision-Swift.h"

@@ -1,4 +1,12 @@
-﻿using System;
+﻿///////////////////////////////////////////////////////////////////////////////
+// Vision.cs
+// 
+// Author: Adam Hegedus
+// Contact: adam.hegedus@possible.com
+// Copyright © 2018 POSSIBLE CEE. Released under the MIT license.
+///////////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -119,7 +127,7 @@ namespace Possible.Vision
 
         /// <summary>
         /// Note: Heavy call!
-        /// Allocates request objects for iOS Vision Framework based on the specified flags.
+        /// Allocates VNRequest objects for iOS Vision Framework based on the specified flags.
         /// </summary>
         /// <param name="requests">Requests.</param>
         /// <param name="maxObservations"></param>
