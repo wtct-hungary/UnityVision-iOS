@@ -22,3 +22,8 @@ The plugin was tested using Unity 2018.1.0f2. The plugin should work with Unity 
     * Target minimum iOS Version: 11.0
     * Architecture: ARM64
     
+## Usage guide
+
+For information on how to use the plugin, study the example scenes located in UnityVision-iOS/Assets/Examples.
+Please note that it is not possible to test the plugin's functionality by running the scenes in the editor.
+To see the plugin in action, please build and deploy one of the example scenes to device.
