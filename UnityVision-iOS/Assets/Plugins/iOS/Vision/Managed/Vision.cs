@@ -69,12 +69,12 @@ namespace Possible.Vision
 		#endregion
 
         /// <summary>
-        /// Callback for when an object has been classified.
+        /// Callback for when an object gets classified.
         /// </summary>
         public event EventHandler<ClassificationResultArgs> OnObjectClassified;
 
         /// <summary>
-        /// Callback for when rectangles have been recognized.
+        /// Callback for when rectangles get recognized.
         /// </summary>
         public event EventHandler<RectanglesRecognizedArgs> OnRectanglesRecognized;
 
@@ -91,7 +91,7 @@ namespace Possible.Vision
         /// <summary>
         /// Buffer used to copy rectangle detection results from the native buffer.
         /// </summary>
-        private CGPoint[] _pointBuffer = new CGPoint[40];   // Default number of  rectangles per frame: 10
+        private CGPoint[] _pointBuffer = new CGPoint[40];   // Default number of rectangles per frame: 10
 
         /// <summary>
         /// Buffer used to copy image classification results from the native buffer.
@@ -141,7 +141,7 @@ namespace Possible.Vision
         /// Evaluates the provided pixel buffer for recognizable objects.
         /// </summary>
         /// <param name="buffer">Native pointer to the image data to evaluate.</param>
-        /// <param name="dataType"></param>
+        /// <param name="dataType">The nature of the data buffer.</param>
         public void EvaluateBuffer(IntPtr buffer, ImageDataType dataType)
         {
             if (_requestsToPerform == VisionRequest.None)

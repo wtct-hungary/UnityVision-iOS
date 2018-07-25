@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Possible.Vision
 {
     /// <summary>
-    /// Managed counterpart for iOS CGPoint.
+    /// Managed counterpart for Core Graphics Point.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct CGPoint

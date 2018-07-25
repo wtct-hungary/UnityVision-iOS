@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// <summary>
 /// This example shows how to perform real-time image classification, using the video feed from the rear camera. 
 /// </summary>
-public class Example : MonoBehaviour
+public class WebCamExample : MonoBehaviour
 {
 	[SerializeField] private Vision _vision;
 	[SerializeField] private RawImage _image;
@@ -34,6 +34,7 @@ public class Example : MonoBehaviour
 
 	private void OnEnable()
 	{
+		// Hook up to the completion event of object classification requests
 		_vision.OnObjectClassified += Vision_OnObjectClassified;
 	}
 
@@ -57,7 +58,7 @@ public class Example : MonoBehaviour
 			// This is the call where we pass in the handle to the image data to be analysed
 			_vision.EvaluateBuffer(
 	
-				// This argument is always of type IntPtr, that refers to the data buffer
+				// This argument is always of type IntPtr, that refers the data buffer
 				buffer: _webCamTexture.GetNativeTexturePtr(), 
 	
 				// We need to tell the plugin about the nature of the underlying data.
