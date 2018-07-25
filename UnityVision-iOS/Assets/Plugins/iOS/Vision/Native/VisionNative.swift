@@ -1,5 +1,5 @@
 //
-//  Vision.swift
+//  VisionNative.swift
 //  Vision
 //
 //  Created by Adam Hegedus on 2018. 05. 23..
@@ -19,7 +19,7 @@ import Vision
     private lazy var visionRequests = [VNRequest]()
     
     // Unique serial queue reserved for vision requests
-    private let visionRequestQueue = DispatchQueue(label: "com.possible.boxar.visionqueue")
+    private let visionRequestQueue = DispatchQueue(label: "com.possible.unity.visionqueue")
     
     // Id of the managed Unity game object to forward messages to
     private var callbackTarget: String = "Vision"
@@ -47,13 +47,12 @@ import Vision
         if classifierEnabled {
             
             // Set up CoreML model
-            guard let selectedModel = try? VNCoreMLModel(for: Inceptionv3().model) else {
-                // (Optional) This can be replaced with other models on https://developer.apple.com/machine-learning/
-                fatalError("[VisionNative] Could not load model. Ensure model has been drag and dropped (copied) to XCode Project from https://developer.apple.com/machine-learning/ . Also ensure the model is part of a target (see: https://stackoverflow.com/questions/45884085/model-is-not-part-of-any-target-add-the-model-to-a-target-to-enable-generation ")
+            guard let mlModel = try? VNCoreMLModel(for: Inceptionv3().model) else {
+                fatalError("[VisionNative] Unable to load CoreML model.")
             }
             
             // Set up Vision-CoreML request
-            let classificationRequest = VNCoreMLRequest(model: selectedModel, completionHandler: classificationCompleteHandler)
+            let classificationRequest = VNCoreMLRequest(model: mlModel, completionHandler: classificationCompleteHandler)
             
             // Crop from centre of images and scale to appropriate size
             classificationRequest.imageCropAndScaleOption = VNImageCropAndScaleOption.centerCrop
