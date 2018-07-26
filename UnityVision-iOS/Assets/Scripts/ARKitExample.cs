@@ -62,7 +62,7 @@ public class ARKitExample : MonoBehaviour
                 // We need to tell the plugin about the nature of the underlying data.
                 // The plugin only supports CVPixelBuffer (CoreVideo) and MTLTexture (Metal).
                 // The ARKit plugin uses CoreVideo to capture images from the device camera.
-                dataType:ImageDataType.CoreVideoPixelBuffer);
+                dataType: ImageDataType.CoreVideoPixelBuffer);
         }
 #endif
     }
