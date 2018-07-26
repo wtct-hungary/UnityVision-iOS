@@ -7,6 +7,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -262,8 +263,30 @@ namespace Possible.Vision
                 var length = _vision_acquirePointBuffer(_pointBuffer);
                 if (length < 4) return;
 
+                var coordinates = _pointBuffer.Take(length).Select(point => (Vector2)point).ToArray();
+                AlignScreenCoordinates(coordinates);
+                
                 // Notify listeners about the resulting points of the recognized rectangles
-                OnRectanglesRecognized(this, new RectanglesRecognizedArgs(_pointBuffer.Take(length).Select(point => (Vector2)point).ToArray()));
+                OnRectanglesRecognized(this, new RectanglesRecognizedArgs(coordinates));
+            }
+        }
+        
+        /// <summary>
+        /// Aligns the specified normalized screen coordinates to device orientation.
+        /// The reference orientation is LandscapeLeft.
+        /// </summary>
+        private static void AlignScreenCoordinates(IList<Vector2> coordinates)
+        {
+            if (Screen.orientation == ScreenOrientation.LandscapeRight)
+            {
+                for (var i = 0; i < coordinates.Count; i++)
+                {
+                    coordinates[i] = Vector2.one - coordinates[i];
+                }
+            }
+            else if (Screen.orientation != ScreenOrientation.LandscapeLeft)
+            {
+                Debug.LogWarning("[Vision] Normalized screen coordinate alignment is not yet implemented for the current orientation.");
             }
         }
 	}

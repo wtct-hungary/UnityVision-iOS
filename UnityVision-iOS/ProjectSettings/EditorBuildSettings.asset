@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Examples/ARKitExample.unity
     guid: 5da50d6af6f694a45ac771cc729b00b8
+  - enabled: 0
+    path: Assets/Examples/ARRectangleExample.unity
+    guid: a918ea22e3856451a8180ec96bf8b76f
   m_configObjects: {}
