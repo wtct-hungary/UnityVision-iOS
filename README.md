@@ -8,6 +8,8 @@ This plugin is able to work together with Unity's ARKit plugin or without it. Wh
 * Image classification
 * Rectangle detection
 
+![](rectangle_detection.gif)
+
 ## Installation
 
 ### Requirements:
