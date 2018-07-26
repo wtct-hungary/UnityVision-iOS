@@ -6,6 +6,9 @@ This plugin is able to work together with Unity's ARKit plugin or without it. Wh
 ### Currently supported features:
 
 * Image classification
+
+![](classification.gif)
+
 * Rectangle detection
 
 ![](rectangle_detection.gif)
