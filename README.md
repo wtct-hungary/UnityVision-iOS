@@ -12,7 +12,7 @@ This plugin is able to work together with Unity's ARKit plugin or without it. Wh
 
 ### Requirements:
 
-The example project in this repository was created using Unity 2018.2.0f2. The plugin was tested using Unity 2018.1.0f2. The plugin should work with Unity 2017 as well, however this was never confirmed. While Core-ML only runs on iOS 11.0, ARKit 1.5 requires iOS 11.3. The plugin requires a Metal Graphics API enabled device to run on.
+The plugin was tested using Unity 2018.1.0f2, but it should work with Unity 2017 as well, however this was never confirmed. Using Core-ML requires iOS 11.0 or above.
 
 ### Follow the steps below to integrate the plugin to your Unity project:
 
