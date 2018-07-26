@@ -16,7 +16,7 @@ The plugin was tested using Unity 2018.1.0f2, but it should work with Unity 2017
 
 ### Follow the steps below to integrate the plugin to your Unity project:
 
-1. Copy the contents of UnityVision-iOS/Assets/Plugins/iOS/Vision to <YourProject>/Assets/Plugins/iOS/Vision.
+1. Copy the contents of UnityVision-iOS/Assets/Plugins/iOS/Vision to YourProject/Assets/Plugins/iOS/Vision.
 2. Set the following values in player settings:
     * Scripting backend: IL2CPP
     * Target minimum iOS Version: 11.0
