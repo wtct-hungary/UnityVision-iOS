@@ -10,9 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Possible.Vision;
 using UnityEngine;
 
-namespace Possible.Vision
+namespace Plugins.iOS.Vision.Managed
 {
     /// <summary>
     /// Managed wrapper for using specific features of iOS Vision Framework and CoreML.
@@ -37,6 +38,9 @@ namespace Possible.Vision
 
         [DllImport("__Internal")]
         private static extern int _vision_acquirePointBuffer([In, Out] CGPoint[] pointBuffer); 
+    
+        [DllImport("__Internal")]
+        private static extern int _vision_acquireBarcodeBuffer([In, Out] VisionBarcode[] barcodeBuffer); 
 
 #else
 
@@ -65,10 +69,20 @@ namespace Possible.Vision
             return 0;
         }
 
+        private static int _vision_acquireBarcodeBuffer([In, Out] VisionBarcode[] barcodeBuffer)
+        {
+            return 0;
+        }
+
 #endif
 
 		#endregion
 
+        /// <summary>
+        /// Callback for when barcodes get detected.
+        /// </summary>
+        public event EventHandler<BarcodesDetectedArgs> OnBarcodesDetected;
+        
         /// <summary>
         /// Callback for when rectangles get recognized.
         /// </summary>
@@ -84,6 +98,11 @@ namespace Possible.Vision
         /// </summary>
         private VisionRequest _requestsInProgress = VisionRequest.None;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private VisionBarcode[] _barcodeBuffer = new VisionBarcode[10];
+        
         /// <summary>
         /// Buffer used to copy rectangle detection results from the native buffer.
         /// </summary>
@@ -123,6 +142,7 @@ namespace Possible.Vision
             _vision_allocateVisionRequests((int)_requestsToPerform, maxObservations);
 
             // Re-allocate copy buffers
+            _barcodeBuffer = new VisionBarcode[maxObservations];
             _pointBuffer = new CGPoint[maxObservations * 4];
             _maxObservations = maxObservations;
         }
@@ -173,6 +193,39 @@ namespace Possible.Vision
             else
             {
                 Debug.LogError("[Vision] Unable to perform vision request. Pointer to buffer is not in expected type or is no longer accessible.");
+            }
+        }
+
+        private void OnBarcodeDetectionComplete(string error)
+        {
+            // Remove rectangle detection from the ongoing requests indicator
+            _requestsInProgress &= ~VisionRequest.BarcodeScanning;
+            
+            // Handle errors
+            if (!string.IsNullOrEmpty(error))
+            {
+                if (error.Contains("Error") || error.Contains("error"))
+                {
+                    Debug.LogError(error);
+                }
+                else
+                {
+                    Debug.LogWarning(error);
+                }
+
+                // Since the message only represents errors, return if its not empty
+                return;
+            }
+            
+            // If anyone is interested in the results
+            if (OnBarcodesDetected != null)
+            {
+                // Acquire resulting points
+                var length = _vision_acquireBarcodeBuffer(_barcodeBuffer);
+                if (length < 4) return;
+                
+                // Notify listeners about the resulting points of the recognized rectangles
+                OnBarcodesDetected(this, new BarcodesDetectedArgs(_barcodeBuffer));
             }
         }
 

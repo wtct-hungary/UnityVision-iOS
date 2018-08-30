@@ -10,8 +10,21 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Possible.Vision
-{   
+namespace Plugins.iOS.Vision.Managed
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    public class BarcodesDetectedArgs : EventArgs
+    {
+        public readonly VisionBarcode[] barcodes;
+
+        public BarcodesDetectedArgs(VisionBarcode[] barcodes)
+        {
+            this.barcodes = barcodes;
+        }
+    }
+    
     /// <summary>
     /// Carries the results of a successful rectangle detection request.
     /// </summary>

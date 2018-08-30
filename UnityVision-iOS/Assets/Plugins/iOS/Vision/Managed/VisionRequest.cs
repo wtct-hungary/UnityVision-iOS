@@ -8,7 +8,7 @@
 
 using System;
 
-namespace Possible.Vision
+namespace Plugins.iOS.Vision.Managed
 {
     /// <summary>
     /// Used to specify the type of vision request to perform.
@@ -22,7 +22,7 @@ namespace Possible.Vision
         None = 0,
 
         /// <summary>
-        /// Scans the barcode of focus on the frame.
+        /// Detects barcodes on the frame.
         /// </summary>
         BarcodeScanning = 1,
 
