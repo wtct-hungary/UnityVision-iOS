@@ -99,7 +99,7 @@ namespace Plugins.iOS.Vision.Managed
         private VisionRequest _requestsInProgress = VisionRequest.None;
 
         /// <summary>
-        /// 
+        /// Buffer used to copy barcode detection results from the native buffer.
         /// </summary>
         private VisionBarcode[] _barcodeBuffer = new VisionBarcode[10];
         
@@ -221,11 +221,11 @@ namespace Plugins.iOS.Vision.Managed
             if (OnBarcodesDetected != null)
             {
                 // Acquire resulting points
-                var length = _vision_acquireBarcodeBuffer(_barcodeBuffer);
-                if (length < 4) return;
-                
-                // Notify listeners about the resulting points of the recognized rectangles
-                OnBarcodesDetected(this, new BarcodesDetectedArgs(_barcodeBuffer));
+                if (_vision_acquireBarcodeBuffer(_barcodeBuffer) > 0)
+                {
+                    // Notify listeners about the resulting points of the recognized rectangles
+                    OnBarcodesDetected(this, new BarcodesDetectedArgs(_barcodeBuffer));   
+                }
             }
         }
 

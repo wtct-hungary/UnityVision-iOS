@@ -10,6 +10,9 @@ using System.Runtime.InteropServices;
 
 namespace Plugins.iOS.Vision.Managed
 {
+    /// <summary>
+    /// Managed counterpart for BarcodeObservation.swift, represents a barcode detection result.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct VisionBarcode
     {

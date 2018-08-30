@@ -13,7 +13,7 @@ using UnityEngine;
 namespace Plugins.iOS.Vision.Managed
 {
     /// <summary>
-    /// 
+    /// Carries the results of a successful barcode detection request.
     /// </summary>
     public class BarcodesDetectedArgs : EventArgs
     {

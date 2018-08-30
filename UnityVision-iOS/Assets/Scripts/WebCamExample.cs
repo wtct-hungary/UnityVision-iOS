@@ -8,20 +8,13 @@
 
 using System.Linq;
 using Plugins.iOS.Vision.Managed;
-using Possible.Vision;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// This example shows how to perform real-time image classification, using the video feed from the rear camera. 
-/// </summary>
 public class WebCamExample : MonoBehaviour
 {
 	[SerializeField] private Vision _vision;
 	[SerializeField] private RawImage _image;
-	[SerializeField] private Text _text;
-	
-	// We use Unity's WebCamTexture API to access image data from device camera.
 	private WebCamTexture _webCamTexture;
 
 	private void Awake()
