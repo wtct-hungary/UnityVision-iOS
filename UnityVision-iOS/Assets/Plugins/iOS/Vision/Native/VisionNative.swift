@@ -23,9 +23,9 @@ import Vision
     // Id of the managed Unity game object to forward messages to
     private var callbackTarget: String = "Vision"
     
-    // Exposed buffer for caching the results of a barcode detection request
-    @objc public var barcodeBuffer: [BarcodeObservation] = []
-    private var maxBarcodeObservations: Int = 10
+    // Exposed buffer for caching the results of an image classification request
+    @objc public var classificationBuffer: [VisionClassification] = []
+    private var maxClassificationResults: Int = 10
     
     // Exposed buffer for caching the results of a rectangle recognition request
     @objc public var pointBuffer: [CGPoint] = []
@@ -40,19 +40,29 @@ import Vision
             return
         }
         
-        let barcodeScanningEnabled = requestType != 2;
+        let classifierEnabled = requestType != 2;
         let rectangleRecognitionEnabled = requestType != 1
         
-        if barcodeScanningEnabled {
+        if classifierEnabled {
             
-            // Set up barcode detection request
-            let barcodeRequest = VNDetectBarcodesRequest(completionHandler:
-                barcodeDetectionCompleteHandler)
+            // Set up CoreML model
+            guard let mlModel = try? VNCoreMLModel(for: Inceptionv3().model) else {
+                fatalError("[VisionNative] Unable to load CoreML model.")
+            }
             
-            self.maxBarcodeObservations = maxObservations
+            // Set up Vision-CoreML request
+            let classificationRequest = VNCoreMLRequest(model: mlModel, completionHandler: classificationCompleteHandler)
+            
+            // Crop from centre of images and scale to appropriate size
+            classificationRequest.imageCropAndScaleOption = VNImageCropAndScaleOption.centerCrop
+            
+            // Set the number of maximum image classifications results kept in store
+            self.maxClassificationResults = maxObservations
             
             // Register request
-            visionRequests.append(barcodeRequest)
+            visionRequests.append(classificationRequest)
+            
+            print("[VisionNative] Classification request allocated.")
         }
         
         if rectangleRecognitionEnabled {
@@ -118,7 +128,7 @@ import Vision
         self.callbackTarget = target
     }
     
-    private func barcodeDetectionCompleteHandler(request: VNRequest, error: Error?) {
+    private func classificationCompleteHandler(request: VNRequest, error: Error?) {
         
         // Fall back to main thread
         DispatchQueue.main.async {
@@ -126,31 +136,25 @@ import Vision
             // Catch errors
             if error != nil {
                 let error = "[VisionNative] Error: " + (error?.localizedDescription)!
-                UnitySendMessage(self.callbackTarget, "OnBarcodeDetectionComplete", error)
+                UnitySendMessage(self.callbackTarget, "OnClassificationComplete", error)
                 return
             }
             
-            guard let observations = request.results as? [VNBarcodeObservation],
+            guard let observations = request.results as? [VNClassificationObservation],
                 let _ = observations.first else {
-                    UnitySendMessage(self.callbackTarget, "OnBarcodeDetectionComplete", "No results")
+                    UnitySendMessage(self.callbackTarget, "OnClassificationComplete", "No results")
                     return
             }
             
-            // Cache results
-            self.barcodeBuffer.removeAll()
-            for observation in observations.prefix(self.maxBarcodeObservations) {
-                if observation.payloadStringValue == nil {
-                    continue
-                }
-                
-                self.barcodeBuffer.append(
-                    BarcodeObservation(
-                        symbology: observation.symbology.rawValue,
-                        payload: observation.payloadStringValue!))
+            // Cache classifications
+            self.classificationBuffer.removeAll()
+            for o in observations.prefix(self.maxClassificationResults) {
+                self.classificationBuffer.append(
+                    VisionClassification(identifier: o.identifier, confidence:o.confidence))
             }
             
             // Call unity object with no errors
-            UnitySendMessage(self.callbackTarget, "OnBarcodeDetectionComplete", "")
+            UnitySendMessage(self.callbackTarget, "OnClassificationComplete", "")
         }
     }
     

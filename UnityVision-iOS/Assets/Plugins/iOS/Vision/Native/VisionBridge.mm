@@ -9,10 +9,10 @@
 
 #pragma mark - C interface
 
-struct BarcodeObservationType {
+struct VisionClassificationType {
     
-    char* symbology;
-    char* payload;
+    float confidence;
+    char* identifier;
 };
 
 char* safeStringCopy(const char* string) {
@@ -51,19 +51,20 @@ extern "C" {
         return [[VisionNative shared] evaluateWithTexture: texture] ? 1 : 0;
     }
     
-    int _vision_acquireBarcodeBuffer(BarcodeObservationType* pBarcodeBuffer) {
+    int _vision_acquireClassificationBuffer(VisionClassificationType* pClassificationBuffer, int maxObservations) {
         
         // Get a handle to the buffer
-        NSArray * array = [[VisionNative shared] barcodeBuffer];
+        NSArray * array = [[VisionNative shared] classificationBuffer];
         
         // Cache count
         unsigned long count = [array count];
+        if (maxObservations < count) count = maxObservations;
         
         // Extract buffer contents
         for (int i = 0; i < count; i++) {
-            BarcodeObservation* observation = (BarcodeObservation*) [array objectAtIndex: i];
-            pBarcodeBuffer[i].symbology = safeStringCopy([observation.symbology UTF8String]);
-            pBarcodeBuffer[i].payload = safeStringCopy([observation.payload UTF8String]);
+            VisionClassification* observation = (VisionClassification*) [array objectAtIndex:i];
+            pClassificationBuffer[i].confidence = observation.confidence;
+            pClassificationBuffer[i].identifier = safeStringCopy([observation.identifier UTF8String]);
         }
         
         // Return with the number of extracted data
