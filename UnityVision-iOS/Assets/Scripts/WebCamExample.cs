@@ -6,7 +6,6 @@
 // Copyright © 2018 POSSIBLE CEE. Released under the MIT license.
 ///////////////////////////////////////////////////////////////////////////////
 
-using System.Linq;
 using Possible.Vision;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,35 +24,13 @@ public class WebCamExample : MonoBehaviour
 
 	private void Awake()
 	{
-		// Allocate webcam texture
 		_webCamTexture = new WebCamTexture(requestedWidth: 1280, requestedHeight: 720);
-		
-		// We'll display the camera image on a full screen texture overlay
 		_image.texture = _webCamTexture;
-		
-		// We need to tell the Vision plugin what kind of requests do we want it to perform.
-		// This call not only prepares the managed wrapper for the specified image requests,
-		// but allocates VNRequest objects on the native side. You only need to call this
-		// method when you initialize your app, and later if you need to change the type
-		// of requests you want to perform. When performing image classification requests,
-		// maxObservations refers to the number of returned guesses, ordered by confidence.
-		_vision.SetAndAllocateRequests(VisionRequest.Classification, maxObservations: 1);
-	}
-
-	private void OnEnable()
-	{
-		// Hook up to the completion event of object classification requests
-		_vision.OnObjectClassified += Vision_OnObjectClassified;
-	}
-
-	private void OnDisable()
-	{
-		_vision.OnObjectClassified -= Vision_OnObjectClassified;
+		_vision.SetAndAllocateRequests(VisionRequest.BarcodeScanning, maxObservations: 1);
 	}
 
 	private void Start()
 	{
-		// Start capturing images from device camera
 		_webCamTexture.Play();
 	}
 
@@ -79,10 +56,4 @@ public class WebCamExample : MonoBehaviour
 		}
 	}
 #endif
-	
-	private void Vision_OnObjectClassified(object sender, ClassificationResultArgs e)
-	{
-		// Display the top guess for the dominant object on the image
-		_text.text = e.observations.First().identifier;
-	}
 }

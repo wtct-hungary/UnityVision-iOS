@@ -38,9 +38,6 @@ namespace Possible.Vision
         [DllImport("__Internal")]
         private static extern int _vision_acquirePointBuffer([In, Out] CGPoint[] pointBuffer); 
 
-        [DllImport("__Internal")]
-        private static extern int _vision_acquireClassificationBuffer([In, Out] VisionClassification[] classificationBuffer, int maxObservations);
-
 #else
 
         private static void _vision_setCallbackTarget(string target)
@@ -68,19 +65,9 @@ namespace Possible.Vision
             return 0;
         }
 
-        private static int _vision_acquireClassificationBuffer([In, Out] VisionClassification[] classificationBuffer, int maxObservations)
-        {
-            return 0;
-        }
-
 #endif
 
 		#endregion
-
-        /// <summary>
-        /// Callback for when an object gets classified.
-        /// </summary>
-        public event EventHandler<ClassificationResultArgs> OnObjectClassified;
 
         /// <summary>
         /// Callback for when rectangles get recognized.
@@ -101,11 +88,6 @@ namespace Possible.Vision
         /// Buffer used to copy rectangle detection results from the native buffer.
         /// </summary>
         private CGPoint[] _pointBuffer = new CGPoint[40];   // Default number of rectangles per frame: 10
-
-        /// <summary>
-        /// Buffer used to copy image classification results from the native buffer.
-        /// </summary>
-        private VisionClassification[] _classificationBuffer = new VisionClassification[10];
 
         /// <summary>
         /// Number of maximum observation results.
@@ -142,7 +124,6 @@ namespace Possible.Vision
 
             // Re-allocate copy buffers
             _pointBuffer = new CGPoint[maxObservations * 4];
-            _classificationBuffer = new VisionClassification[maxObservations];
             _maxObservations = maxObservations;
         }
 
@@ -192,42 +173,6 @@ namespace Possible.Vision
             else
             {
                 Debug.LogError("[Vision] Unable to perform vision request. Pointer to buffer is not in expected type or is no longer accessible.");
-            }
-        }
-
-        /// <summary>
-        /// Invoked from native component when an object gets classified.
-        /// </summary>
-        /// <param name="error">Error message sent from the native component.</param>
-        private void OnClassificationComplete(string error)
-        {
-            // Remove classification from the ongoing requests indicator
-            _requestsInProgress &= ~VisionRequest.Classification;
-
-            // Handle errors
-            if (!string.IsNullOrEmpty(error))
-            {
-                if (error.Contains("Error") || error.Contains("error"))
-                {
-                    Debug.LogError(error);
-                }
-                else
-                {
-                    Debug.LogWarning(error);
-                }
-
-                // Since the message only represents errors, return if its not empty
-                return;
-            }
-
-            // If anyone is interested in the results
-            if (OnObjectClassified != null)
-            {
-                var length = _vision_acquireClassificationBuffer(_classificationBuffer, _maxObservations);
-                if (length < 1) return;
-
-                // Notify listeners
-                OnObjectClassified(this, new ClassificationResultArgs(_classificationBuffer.Take(length).ToArray()));
             }
         }
 

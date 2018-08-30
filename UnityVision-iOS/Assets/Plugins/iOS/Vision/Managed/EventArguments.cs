@@ -11,20 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Possible.Vision
-{
-    /// <summary>
-    /// Carries the results of a succesful image classification request.
-    /// </summary>
-    public class ClassificationResultArgs : EventArgs
-    {
-        public readonly VisionClassification[] observations;
-
-        public ClassificationResultArgs(VisionClassification[] observations)
-        {
-            this.observations = observations;
-        }
-    }
-    
+{   
     /// <summary>
     /// Carries the results of a successful rectangle detection request.
     /// </summary>
