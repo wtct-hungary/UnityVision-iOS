@@ -9,7 +9,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Possible.Vision
+namespace Plugins.iOS.Vision.Managed
 {
     /// <summary>
     /// Represents a rectangle detection result.

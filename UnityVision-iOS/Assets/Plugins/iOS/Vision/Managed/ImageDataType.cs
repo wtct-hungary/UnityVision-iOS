@@ -6,7 +6,7 @@
 // Copyright © 2018 POSSIBLE CEE. Released under the MIT license.
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace Possible.Vision
+namespace Plugins.iOS.Vision.Managed
 {
 	public enum ImageDataType 
 	{
@@ -17,7 +17,7 @@ namespace Possible.Vision
 		MetalTexture,
 		
 		/// <summary>
-		/// Use this value if need to anlyze image data stored in a native CVPixelBuffer.
+		/// Use this value if need to analyze image data stored in a native CVPixelBuffer.
 		/// https://developer.apple.com/documentation/corevideo/cvpixelbuffer
 		/// </summary>
 		CoreVideoPixelBuffer

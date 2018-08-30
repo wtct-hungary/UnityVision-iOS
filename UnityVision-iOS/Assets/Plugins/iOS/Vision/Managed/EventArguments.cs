@@ -10,18 +10,18 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Possible.Vision
+namespace Plugins.iOS.Vision.Managed
 {
     /// <summary>
-    /// Carries the results of a succesful image classification request.
+    /// Carries the results of a successful barcode detection request.
     /// </summary>
-    public class ClassificationResultArgs : EventArgs
+    public class BarcodesDetectedArgs : EventArgs
     {
-        public readonly VisionClassification[] observations;
+        public readonly VisionBarcode[] barcodes;
 
-        public ClassificationResultArgs(VisionClassification[] observations)
+        public BarcodesDetectedArgs(VisionBarcode[] barcodes)
         {
-            this.observations = observations;
+            this.barcodes = barcodes;
         }
     }
     

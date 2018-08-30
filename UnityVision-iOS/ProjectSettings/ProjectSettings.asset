@@ -233,7 +233,7 @@ PlayerSettings:
   iOSManualSigningProvisioningProfileType: 0
   tvOSManualSigningProvisioningProfileType: 0
   appleEnableAutomaticSigning: 0
-  iOSRequireARKit: 1
+  iOSRequireARKit: 0
   appleEnableProMotion: 0
   vulkanEditorSupport: 0
   clonedFromGUID: c0afd0d1d80e3634a9dac47e8a0426ea

@@ -10,9 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Possible.Vision;
 using UnityEngine;
 
-namespace Possible.Vision
+namespace Plugins.iOS.Vision.Managed
 {
     /// <summary>
     /// Managed wrapper for using specific features of iOS Vision Framework and CoreML.
@@ -37,9 +38,9 @@ namespace Possible.Vision
 
         [DllImport("__Internal")]
         private static extern int _vision_acquirePointBuffer([In, Out] CGPoint[] pointBuffer); 
-
+    
         [DllImport("__Internal")]
-        private static extern int _vision_acquireClassificationBuffer([In, Out] VisionClassification[] classificationBuffer, int maxObservations);
+        private static extern int _vision_acquireBarcodeBuffer([In, Out] VisionBarcode[] barcodeBuffer); 
 
 #else
 
@@ -68,7 +69,7 @@ namespace Possible.Vision
             return 0;
         }
 
-        private static int _vision_acquireClassificationBuffer([In, Out] VisionClassification[] classificationBuffer, int maxObservations)
+        private static int _vision_acquireBarcodeBuffer([In, Out] VisionBarcode[] barcodeBuffer)
         {
             return 0;
         }
@@ -78,10 +79,10 @@ namespace Possible.Vision
 		#endregion
 
         /// <summary>
-        /// Callback for when an object gets classified.
+        /// Callback for when barcodes get detected.
         /// </summary>
-        public event EventHandler<ClassificationResultArgs> OnObjectClassified;
-
+        public event EventHandler<BarcodesDetectedArgs> OnBarcodesDetected;
+        
         /// <summary>
         /// Callback for when rectangles get recognized.
         /// </summary>
@@ -98,14 +99,14 @@ namespace Possible.Vision
         private VisionRequest _requestsInProgress = VisionRequest.None;
 
         /// <summary>
+        /// Buffer used to copy barcode detection results from the native buffer.
+        /// </summary>
+        private VisionBarcode[] _barcodeBuffer = new VisionBarcode[10];
+        
+        /// <summary>
         /// Buffer used to copy rectangle detection results from the native buffer.
         /// </summary>
         private CGPoint[] _pointBuffer = new CGPoint[40];   // Default number of rectangles per frame: 10
-
-        /// <summary>
-        /// Buffer used to copy image classification results from the native buffer.
-        /// </summary>
-        private VisionClassification[] _classificationBuffer = new VisionClassification[10];
 
         /// <summary>
         /// Number of maximum observation results.
@@ -141,8 +142,8 @@ namespace Possible.Vision
             _vision_allocateVisionRequests((int)_requestsToPerform, maxObservations);
 
             // Re-allocate copy buffers
+            _barcodeBuffer = new VisionBarcode[maxObservations];
             _pointBuffer = new CGPoint[maxObservations * 4];
-            _classificationBuffer = new VisionClassification[maxObservations];
             _maxObservations = maxObservations;
         }
 
@@ -195,15 +196,11 @@ namespace Possible.Vision
             }
         }
 
-        /// <summary>
-        /// Invoked from native component when an object gets classified.
-        /// </summary>
-        /// <param name="error">Error message sent from the native component.</param>
-        private void OnClassificationComplete(string error)
+        private void OnBarcodeDetectionComplete(string error)
         {
-            // Remove classification from the ongoing requests indicator
-            _requestsInProgress &= ~VisionRequest.Classification;
-
+            // Remove rectangle detection from the ongoing requests indicator
+            _requestsInProgress &= ~VisionRequest.BarcodeScanning;
+            
             // Handle errors
             if (!string.IsNullOrEmpty(error))
             {
@@ -219,15 +216,16 @@ namespace Possible.Vision
                 // Since the message only represents errors, return if its not empty
                 return;
             }
-
+            
             // If anyone is interested in the results
-            if (OnObjectClassified != null)
+            if (OnBarcodesDetected != null)
             {
-                var length = _vision_acquireClassificationBuffer(_classificationBuffer, _maxObservations);
-                if (length < 1) return;
-
-                // Notify listeners
-                OnObjectClassified(this, new ClassificationResultArgs(_classificationBuffer.Take(length).ToArray()));
+                // Acquire resulting points
+                if (_vision_acquireBarcodeBuffer(_barcodeBuffer) > 0)
+                {
+                    // Notify listeners about the resulting points of the recognized rectangles
+                    OnBarcodesDetected(this, new BarcodesDetectedArgs(_barcodeBuffer));   
+                }
             }
         }
 

@@ -8,7 +8,7 @@
 
 using System;
 
-namespace Possible.Vision
+namespace Plugins.iOS.Vision.Managed
 {
     /// <summary>
     /// Used to specify the type of vision request to perform.
@@ -22,9 +22,9 @@ namespace Possible.Vision
         None = 0,
 
         /// <summary>
-        /// Classify the dominant object on the frame.
+        /// Detects barcodes on the frame.
         /// </summary>
-        Classification = 1,
+        BarcodeScanning = 1,
 
         /// <summary>
         /// Detect rectangles on the frame.
@@ -34,7 +34,7 @@ namespace Possible.Vision
         /// <summary>
         /// Both classify the dominant object on the frame and detect rectangles.
         /// </summary>
-        ClassificationAndRectangleDetection = Classification | RectangleDetection
+        BarcodeScanningAndRectangleDetection = BarcodeScanning | RectangleDetection
     }
 
     public static class VisionRequestExtensions

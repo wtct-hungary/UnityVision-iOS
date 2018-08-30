@@ -8,10 +8,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Examples/WebCamExample.unity
     guid: d249617384ac6459892bb5c3ae2a178d
-  - enabled: 0
-    path: Assets/Examples/ARKitExample.unity
-    guid: 5da50d6af6f694a45ac771cc729b00b8
-  - enabled: 0
-    path: Assets/Examples/ARRectangleExample.unity
-    guid: a918ea22e3856451a8180ec96bf8b76f
   m_configObjects: {}
