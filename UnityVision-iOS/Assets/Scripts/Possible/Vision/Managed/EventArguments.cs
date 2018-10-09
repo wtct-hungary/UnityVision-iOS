@@ -8,12 +8,13 @@
 
 using System;
 using System.Collections.Generic;
+using Possible.Vision.Managed.Bridging;
 using UnityEngine;
 
-namespace Possible.Vision
+namespace Possible.Vision.Managed
 {
     /// <summary>
-    /// Carries the results of a succesful image classification request.
+    /// Carries the results of a successful image classification request.
     /// </summary>
     public class ClassificationResultArgs : EventArgs
     {

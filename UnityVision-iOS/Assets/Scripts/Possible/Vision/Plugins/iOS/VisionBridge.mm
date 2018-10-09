@@ -87,4 +87,26 @@ extern "C" {
         // Return with the number of extracted data
         return (int)count;
     }
+    
+    int _vision_allocateCVPixelBuffer(char* address, int width, int height,
+                                      int format, CVPixelBufferRef* outPixelBufferPtr) {
+        
+        OSType pixelFormat = kCVPixelFormatType_32ARGB;
+        int bytesPerRow = width * 4;
+        
+        if (format == 1) {
+            pixelFormat = kCVPixelFormatType_24RGB;
+            bytesPerRow = width * 3;
+        }
+        
+        return CVPixelBufferCreateWithBytes(kCFAllocatorDefault, width, height, pixelFormat, address, bytesPerRow, NULL, NULL, NULL, outPixelBufferPtr);
+    }
+    
+    void _vision_releaseCVPixelBuffer(CVPixelBufferRef pixelBuffer) {
+        CVPixelBufferRelease(pixelBuffer);
+    }
+    
+    void _vision_release(void* p) {
+        free(p);
+    }
 }

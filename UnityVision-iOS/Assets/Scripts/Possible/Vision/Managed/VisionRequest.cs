@@ -8,7 +8,7 @@
 
 using System;
 
-namespace Possible.Vision
+namespace Possible.Vision.Managed
 {
     /// <summary>
     /// Used to specify the type of vision request to perform.

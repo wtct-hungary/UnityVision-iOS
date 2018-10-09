@@ -40,13 +40,17 @@ import Vision
             return
         }
         
-        let classifierEnabled = requestType != 2;
-        let rectangleRecognitionEnabled = requestType != 1
+        let classifierEnabled = requestType & 1 << 0 == 1 << 0
+        let rectangleRecognitionEnabled = requestType & 1 << 1 == 1 << 1
         
         if classifierEnabled {
             
             // Set up CoreML model
-            guard let mlModel = try? VNCoreMLModel(for: Inceptionv3().model) else {
+            guard let inception = Inceptionv3()?.model else {
+                fatalError("[VisionNative] Failed to generate CoreML model.")
+            }
+            
+            guard let mlModel = try? VNCoreMLModel(for: inception) else {
                 fatalError("[VisionNative] Unable to load CoreML model.")
             }
             

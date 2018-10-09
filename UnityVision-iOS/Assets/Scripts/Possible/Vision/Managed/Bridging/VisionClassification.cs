@@ -8,10 +8,10 @@
 
 using System.Runtime.InteropServices;
 
-namespace Possible.Vision
+namespace Possible.Vision.Managed.Bridging
 {
     /// <summary>
-    /// Represents an image classification result.
+    /// Represents a single entry extracted from the native classification result buffer. 
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct VisionClassification

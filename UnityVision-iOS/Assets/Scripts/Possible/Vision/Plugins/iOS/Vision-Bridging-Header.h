@@ -10,5 +10,6 @@
 
 #import <Foundation/Foundation.h>
 #import "UnityInterface.h"
+#import "inceptionv3.h"
 
 #endif /* Vision_Bridging_Header_h */

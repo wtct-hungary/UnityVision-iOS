@@ -6,12 +6,12 @@
 // Copyright © 2018 POSSIBLE CEE. Released under the MIT license.
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace Possible.Vision
+namespace Possible.Vision.Managed
 {
 	public enum ImageDataType 
 	{
 		/// <summary>
-		/// Use this value whenever you need to analyze image data stored in a texture.
+		/// Use this value whenever you need to analyze image data stored in a texture (using Metal graphics api).
 		/// https://docs.unity3d.com/ScriptReference/Texture.GetNativeTexturePtr.html
 		/// </summary>
 		MetalTexture,

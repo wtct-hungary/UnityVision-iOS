@@ -10,9 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Possible.Vision.Managed.Bridging;
 using UnityEngine;
 
-namespace Possible.Vision
+namespace Possible.Vision.Managed
 {
     /// <summary>
     /// Managed wrapper for using specific features of iOS Vision Framework and CoreML.

@@ -9,10 +9,10 @@
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace Possible.Vision
+namespace Possible.Vision.Managed.Bridging
 {
     /// <summary>
-    /// Managed counterpart for Core Graphics Point.
+    /// Managed counterpart for the CGPoint type on iOS platform.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct CGPoint
