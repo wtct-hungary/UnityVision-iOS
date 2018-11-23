@@ -11,10 +11,13 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Examples/ARKitExample.unity
     guid: 5da50d6af6f694a45ac771cc729b00b8
+  - enabled: 1
+    path: Assets/Examples/ARKitExample2.unity
+    guid: 9e0a2876cf7c749e9b61997a0deb0d20
   - enabled: 0
     path: Assets/Examples/ARRectangleExample.unity
     guid: a918ea22e3856451a8180ec96bf8b76f
-  - enabled: 1
+  - enabled: 0
     path: Assets/Examples/CoreVideoExample.unity
     guid: cc5220e4fdebe449199e2e36e5099dfa
   m_configObjects: {}
