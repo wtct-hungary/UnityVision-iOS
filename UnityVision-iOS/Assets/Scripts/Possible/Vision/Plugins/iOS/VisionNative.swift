@@ -20,6 +20,9 @@ import Vision
     // Unique serial queue reserved for vision requests
     private let visionRequestQueue = DispatchQueue(label: "com.possible.unity.visionqueue")
     
+    // Used to reatain the pixel buffer when it is passed in as a target to evaulate
+    private var retainedBuffer: CVPixelBuffer?
+    
     // Id of the managed Unity game object to forward messages to
     private var callbackTarget: String = "Vision"
     
@@ -88,42 +91,42 @@ import Vision
         // Create an image from the current state of the buffer
         guard let image = CIImage(mtlTexture: texture, options: nil) else { return false }
         
-        // Perform vision request
-        performVisionRequest(for: image)
+        // Prepare image request
+        let imageRequestHandler = VNImageRequestHandler(ciImage: image, options: [:])
+        
+        visionRequestQueue.async {
+            
+            // Run image request
+            do {
+                try imageRequestHandler.perform(self.visionRequests)
+            } catch {
+                print("Error: Vision request failed with error \"\(error)\"")
+            }
+        }
         
         return true
     }
     
     @objc func evaluate(buffer: CVPixelBuffer) -> Bool {
         
-        // Lock the buffer
-        CVPixelBufferLockBaseAddress(buffer, CVPixelBufferLockFlags.readOnly)
+        // Retain the buffer
+        self.retainedBuffer = buffer;
         
-        // Create an image from the current state of the buffer
-        let image = CIImage(cvPixelBuffer: buffer)
-        
-        // Unlock the buffer
-        CVPixelBufferUnlockBaseAddress(buffer, CVPixelBufferLockFlags.readOnly)
-        
-        // Perform vision request
-        performVisionRequest(for: image)
-        
-        return true
-    }
-    
-    private func performVisionRequest(for image: CIImage) {
+        // Prepare image request
+        let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: self.retainedBuffer!, options: [:])
         
         visionRequestQueue.async {
-            // Prepare image request
-            let imageRequestHandler = VNImageRequestHandler(ciImage: image, options: [:])
             
             // Run image request
             do {
+                defer { self.retainedBuffer = nil }
                 try imageRequestHandler.perform(self.visionRequests)
             } catch {
-                print(error)
+                print("Error: Vision request failed with error \"\(error)\"")
             }
         }
+        
+        return true
     }
     
     @objc func setCallbackTarget(target: String) {
