@@ -8,6 +8,7 @@
 import Foundation
 import AVFoundation
 import Vision
+import CoreImage
 
 @objc public class VisionNative: NSObject {
     
